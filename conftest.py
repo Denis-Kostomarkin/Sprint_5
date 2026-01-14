@@ -32,3 +32,12 @@ def urls(base_url):
         "forgot_password": f"{base_url}forgot-password",
         "profile": f"{base_url}account/profile"
     }
+
+
+@pytest.fixture
+def generate_unique_email():
+    """Фикстура для генерации уникального email"""
+    def _generate():
+        random_num = random.randint(10000, 99999)
+        return f"testuser{random_num}@test.com"
+    return _generate
