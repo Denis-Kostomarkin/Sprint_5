@@ -1,61 +1,68 @@
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.locators import MainPageLocators
+from constants import MAIN_URL
 
 
 class TestConstructor:
-    """Тесты конструктора"""
     
-    def test_constructor_sections(self, urls):
-        """Проверка переходов по разделам конструктора"""
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(5)
+    def test_buns_section_active_by_default(self, driver):
+        """Проверяем, что по умолчанию активна секция 'Булки'"""
+        driver.get(MAIN_URL)
         
-        try:
-            # Открываем главную страницу
-            driver.get(urls["main"])
-            
-            # Ждем загрузки конструктора
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.MAIN_TITLE)
-            )
-            
-            # Находим разделы конструктора
-            buns_tab = driver.find_element(*MainPageLocators.BUNS_SECTION)
-            sauces_tab = driver.find_element(*MainPageLocators.SAUCES_SECTION)
-            fillings_tab = driver.find_element(*MainPageLocators.FILLINGS_SECTION)
-            
-            # Проверяем, что изначально активны "Булки"
-            assert "tab_tab_type_current" in buns_tab.get_attribute("class") or \
-                   "current" in buns_tab.get_attribute("class")
-            
-            # Кликаем на "Соусы"
-            sauces_tab.click()
-            
-            # Проверяем, что теперь активны "Соусы"
-            WebDriverWait(driver, 5).until(
-                lambda d: "tab_tab_type_current" in sauces_tab.get_attribute("class") or 
-                         "current" in sauces_tab.get_attribute("class")
-            )
-            
-            # Кликаем на "Начинки"
-            fillings_tab.click()
-            
-            # Проверяем, что теперь активны "Начинки"
-            WebDriverWait(driver, 5).until(
-                lambda d: "tab_tab_type_current" in fillings_tab.get_attribute("class") or 
-                         "current" in fillings_tab.get_attribute("class")
-            )
-            
-            # Возвращаемся к "Булки"
-            buns_tab.click()
-            
-            # Проверяем, что снова активны "Булки"
-            WebDriverWait(driver, 5).until(
-                lambda d: "tab_tab_type_current" in buns_tab.get_attribute("class") or 
-                         "current" in buns_tab.get_attribute("class")
-            )
-            
-        finally:
-            driver.quit()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.MAIN_TITLE)
+        )
+        
+        buns_tab = driver.find_element(*MainPageLocators.BUNS_SECTION)
+        active_tab = driver.find_element(*MainPageLocators.ACTIVE_SECTION)
+        
+        assert buns_tab == active_tab
+    
+    def test_sauces_section_activation(self, driver):
+        """Проверяем активацию секции 'Соусы' при клике"""
+        driver.get(MAIN_URL)
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.MAIN_TITLE)
+        )
+        
+        sauces_tab = driver.find_element(*MainPageLocators.SAUCES_SECTION)
+        sauces_tab.click()
+        
+        active_tab = driver.find_element(*MainPageLocators.ACTIVE_SECTION)
+        
+        assert sauces_tab == active_tab
+    
+    def test_fillings_section_activation(self, driver):
+        """Проверяем активацию секции 'Начинки' при клике"""
+        driver.get(MAIN_URL)
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.MAIN_TITLE)
+        )
+        
+        fillings_tab = driver.find_element(*MainPageLocators.FILLINGS_SECTION)
+        fillings_tab.click()
+        
+        active_tab = driver.find_element(*MainPageLocators.ACTIVE_SECTION)
+        
+        assert fillings_tab == active_tab
+    
+    def test_return_to_buns_section(self, driver):
+        """Проверяем возврат к секции 'Булки'"""
+        driver.get(MAIN_URL)
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.MAIN_TITLE)
+        )
+        
+        sauces_tab = driver.find_element(*MainPageLocators.SAUCES_SECTION)
+        sauces_tab.click()
+        
+        buns_tab = driver.find_element(*MainPageLocators.BUNS_SECTION)
+        buns_tab.click()
+        
+        active_tab = driver.find_element(*MainPageLocators.ACTIVE_SECTION)
+        
+        assert buns_tab == active_tab

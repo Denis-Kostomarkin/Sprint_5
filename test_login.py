@@ -1,131 +1,104 @@
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.locators import MainPageLocators, LoginPageLocators, RegistrationPageLocators, ForgotPasswordPageLocators
+from constants import EMAIL, VALID_PASSWORD, MAIN_URL, LOGIN_URL, REGISTER_URL, FORGOT_PASSWORD_URL
 
 
 class TestLogin:
-    """Тесты на вход в аккаунт"""
     
-    def test_login_from_main_page(self, urls, test_data):
+    def test_login_from_main_page(self, driver):
         """Вход через кнопку 'Войти в аккаунт' на главной"""
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(5)
+        driver.get(MAIN_URL)
         
-        try:
-            # Открываем главную страницу
-            driver.get(urls["main"])
-            
-            # Кликаем на кнопку "Войти в аккаунт"
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.LOGIN_BUTTON)
-            )
-            driver.find_element(*MainPageLocators.LOGIN_BUTTON).click()
-            
-            # Ждем загрузки страницы входа
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
-            )
-            
-            # Заполняем форму
-            driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(test_data["email"])
-            driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(test_data["valid_password"])
-            driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-            
-            # Проверяем, что вошли успешно
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-            )
-            
-        finally:
-            driver.quit()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.LOGIN_BUTTON)
+        )
+        driver.find_element(*MainPageLocators.LOGIN_BUTTON).click()
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
+        
+        order_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
+        )
+        assert order_button.is_displayed()
     
-    def test_login_from_personal_account(self, urls, test_data):
+    def test_login_from_personal_account(self, driver):
         """Вход через кнопку 'Личный кабинет'"""
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(5)
+        driver.get(MAIN_URL)
         
-        try:
-            # Открываем главную страницу
-            driver.get(urls["main"])
-            
-            # Кликаем на "Личный кабинет"
-            driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
-            
-            # Ждем загрузки формы входа
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
-            )
-            
-            # Заполняем форму
-            driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(test_data["email"])
-            driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(test_data["valid_password"])
-            driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-            
-            # Проверяем успешный вход
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-            )
-            
-        finally:
-            driver.quit()
+        driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
+        
+        order_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
+        )
+        assert order_button.is_displayed()
     
-    def test_login_from_registration_page(self, urls, test_data):
+    def test_login_from_registration_page(self, driver):
         """Вход через кнопку в форме регистрации"""
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(5)
+        driver.get(REGISTER_URL)
         
-        try:
-            # Открываем страницу регистрации
-            driver.get(urls["register"])
-            
-            # Кликаем на ссылку "Войти"
-            driver.find_element(*RegistrationPageLocators.LOGIN_LINK).click()
-            
-            # Ждем загрузки формы входа
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
-            )
-            
-            # Заполняем форму
-            driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(test_data["email"])
-            driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(test_data["valid_password"])
-            driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-            
-            # Проверяем успешный вход
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-            )
-            
-        finally:
-            driver.quit()
+        driver.find_element(*RegistrationPageLocators.LOGIN_LINK).click()
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
+        
+        order_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
+        )
+        assert order_button.is_displayed()
     
-    def test_login_from_forgot_password_page(self, urls, test_data):
+    def test_login_from_forgot_password_page(self, driver):
         """Вход через кнопку в форме восстановления пароля"""
-        driver = webdriver.Chrome()
-        driver.implicitly_wait(5)
+        driver.get(FORGOT_PASSWORD_URL)
         
-        try:
-            # Открываем страницу восстановления пароля
-            driver.get(urls["forgot_password"])
-            
-            # Кликаем на ссылку "Войти"
-            driver.find_element(*ForgotPasswordPageLocators.FORGOT_LOGIN_LINK).click()
-            
-            # Ждем загрузки формы входа
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
-            )
-            
-            # Заполняем форму
-            driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(test_data["email"])
-            driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(test_data["valid_password"])
-            driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-            
-            # Проверяем успешный вход
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-            )
-            
-        finally:
-            driver.quit()
+        driver.find_element(*ForgotPasswordPageLocators.FORGOT_LOGIN_LINK).click()
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
+        
+        order_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
+        )
+        assert order_button.is_displayed()
+    
+    def test_login_with_wrong_password(self, driver):
+        """Вход с неправильным паролем"""
+        driver.get(LOGIN_URL)
+        
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        
+        wrong_password = "wrong_password_123"
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(wrong_password)
+        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
+        
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
+        )
+        assert "login" in driver.current_url
