@@ -13,7 +13,7 @@ class UserData:
 
 class Urls:
     """URL сайта"""
-    BASE_URL = "https://stellarburgers.nomoreparties.site/"
+    BASE_URL = "https://stellarburgers.education-services.ru/"
     MAIN = BASE_URL
     LOGIN = f"{BASE_URL}login"
     REGISTER = f"{BASE_URL}register"
