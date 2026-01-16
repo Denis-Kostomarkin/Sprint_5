@@ -1,6 +1,6 @@
 """
 Локаторы для элементов сайта Stellar Burgers
-URL: https://stellarburgers.nomoreparties.site/
+URL: https://stellarburgers.education-services.ru/
 """
 
 from selenium.webdriver.common.by import By
@@ -9,10 +9,10 @@ from selenium.webdriver.common.by import By
 class MainPageLocators:
     """Локаторы главной страницы"""
     
-    # Кнопки навигации в шапке
-    CONSTRUCTOR_BUTTON = (By.XPATH, "//a[contains(@href, '/')]//p[text()='Конструктор']")
-    ORDER_FEED_BUTTON = (By.XPATH, "//a[contains(@href, '/feed')]//p[text()='Лента Заказов']")
-    PERSONAL_ACCOUNT_BUTTON = (By.XPATH, "//a[contains(@href, '/account/profile')]//p[text()='Личный Кабинет']")
+    # Кнопки навигации в шапке - исправленный регистр
+    CONSTRUCTOR_BUTTON = (By.XPATH, "//a/p[text()='Конструктор']")
+    ORDER_FEED_BUTTON = (By.XPATH, "//a/p[text()='Лента Заказов']")
+    PERSONAL_ACCOUNT_BUTTON = (By.XPATH, "//a/p[text()='Личный Кабинет']")  # Исправлен регистр
     
     # Логотип
     LOGO = (By.CLASS_NAME, "AppHeader_header__logo__2D0X2")
@@ -39,22 +39,22 @@ class LoginPageLocators:
     """Локаторы страницы входа"""
     
     LOGIN_TITLE = (By.XPATH, "//h2[text()='Вход']")
-    EMAIL_INPUT = (By.XPATH, "//input[@type='text' and @name='name']")
+    EMAIL_INPUT = (By.XPATH, "//input[@name='name']")
     PASSWORD_INPUT = (By.XPATH, "//input[@type='password']")
     LOGIN_SUBMIT_BUTTON = (By.XPATH, "//button[text()='Войти']")
-    REGISTER_LINK = (By.XPATH, "//a[text()='Зарегистрироваться']")
-    FORGOT_PASSWORD_LINK = (By.XPATH, "//a[text()='Восстановить пароль']")
+    REGISTER_LINK = (By.LINK_TEXT, "Зарегистрироваться")
+    FORGOT_PASSWORD_LINK = (By.LINK_TEXT, "Восстановить пароль")
 
 
 class RegistrationPageLocators:
     """Локаторы страницы регистрации"""
     
     REGISTER_TITLE = (By.XPATH, "//h2[text()='Регистрация']")
-    NAME_INPUT = (By.XPATH, "(//input[@type='text'])[1]")
-    EMAIL_INPUT = (By.XPATH, "(//input[@type='text'])[2]")
+    NAME_INPUT = (By.XPATH, "//label[text()='Имя']/following-sibling::input")
+    EMAIL_INPUT = (By.XPATH, "//label[text()='Email']/following-sibling::input")
     PASSWORD_INPUT = (By.XPATH, "//input[@type='password']")
     REGISTER_SUBMIT_BUTTON = (By.XPATH, "//button[text()='Зарегистрироваться']")
-    LOGIN_LINK = (By.XPATH, "//a[text()='Войти']")
+    LOGIN_LINK = (By.LINK_TEXT, "Войти")
     PASSWORD_ERROR = (By.XPATH, "//p[contains(@class, 'input__error')]")
 
 
@@ -64,7 +64,7 @@ class ForgotPasswordPageLocators:
     FORGOT_PASSWORD_TITLE = (By.XPATH, "//h2[text()='Восстановление пароля']")
     EMAIL_INPUT = (By.XPATH, "//input[@type='text']")
     RESET_BUTTON = (By.XPATH, "//button[text()='Восстановить']")
-    LOGIN_LINK = (By.XPATH, "//a[text()='Войти']")
+    LOGIN_LINK = (By.LINK_TEXT, "Войти")
 
 
 class ProfilePageLocators:
@@ -72,4 +72,3 @@ class ProfilePageLocators:
     
     PROFILE_TAB = (By.XPATH, "//a[text()='Профиль']")
     LOGOUT_BUTTON = (By.XPATH, "//button[text()='Выход']")
-    CONSTRUCTOR_LINK = (By.XPATH, "//a[contains(@href, '/')]")

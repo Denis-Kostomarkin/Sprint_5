@@ -1,78 +1,55 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from locators.locators import MainPageLocators, LoginPageLocators, ProfilePageLocators
-from constants import UserData, Urls
+from locators.locators import MainPageLocators, ProfilePageLocators
+from constants import Urls
+
 
 class TestNavigation:
     
-    def test_navigate_to_profile(self, driver):
+    def test_navigate_to_profile(self, driver, login):
         """Переход в личный кабинет"""
-        driver.get(Urls.LOGIN)
-        
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
-        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-        
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-        )
+        # login фикстура уже выполнила вход
         
         driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
         
-        profile_tab = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(ProfilePageLocators.PROFILE_TAB)
-        )
-        assert profile_tab.is_displayed()
+        # ПРОВЕРКА
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(ProfilePageLocators.PROFILE_TAB)
+        ).is_displayed()
         assert "account/profile" in driver.current_url
     
-    def test_navigate_from_profile_to_constructor_by_button(self, driver):
+    def test_navigate_from_profile_to_constructor_by_button(self, driver, login):
         """Переход из личного кабинета в конструктор по кнопке"""
-        driver.get(Urls.LOGIN)
-        
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
-        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-        
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-        )
+        # login фикстура уже выполнила вход
         
         driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
         
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(ProfilePageLocators.PROFILE_TAB)
+            EC.visibility_of_element_located(ProfilePageLocators.PROFILE_TAB)
         )
         
         driver.find_element(*MainPageLocators.CONSTRUCTOR_BUTTON).click()
         
-        order_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-        )
-        assert order_button.is_displayed()
+        # ПРОВЕРКА
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPageLocators.ORDER_BUTTON)
+        ).is_displayed()
         assert driver.current_url == Urls.MAIN
     
-    def test_navigate_from_profile_to_constructor_by_logo(self, driver):
+    def test_navigate_from_profile_to_constructor_by_logo(self, driver, login):
         """Переход из личного кабинета в конструктор по логотипу"""
-        driver.get(Urls.LOGIN)
-        
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
-        driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
-        
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-        )
+        # login фикстура уже выполнила вход
         
         driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
         
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(ProfilePageLocators.PROFILE_TAB)
+            EC.visibility_of_element_located(ProfilePageLocators.PROFILE_TAB)
         )
         
         driver.find_element(*MainPageLocators.LOGO).click()
         
-        order_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
-        )
-        assert order_button.is_displayed()
+        # ПРОВЕРКА
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPageLocators.ORDER_BUTTON)
+        ).is_displayed()
         assert driver.current_url == Urls.MAIN
