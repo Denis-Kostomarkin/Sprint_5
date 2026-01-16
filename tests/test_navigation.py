@@ -1,17 +1,16 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.locators import MainPageLocators, LoginPageLocators, ProfilePageLocators
-from constants import EMAIL, VALID_PASSWORD, LOGIN_URL, MAIN_URL
-
+from constants import UserData, Urls
 
 class TestNavigation:
     
     def test_navigate_to_profile(self, driver):
         """Переход в личный кабинет"""
-        driver.get(LOGIN_URL)
+        driver.get(Urls.LOGIN)
         
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
         driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
         
         WebDriverWait(driver, 10).until(
@@ -28,10 +27,10 @@ class TestNavigation:
     
     def test_navigate_from_profile_to_constructor_by_button(self, driver):
         """Переход из личного кабинета в конструктор по кнопке"""
-        driver.get(LOGIN_URL)
+        driver.get(Urls.LOGIN)
         
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
         driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
         
         WebDriverWait(driver, 10).until(
@@ -50,14 +49,14 @@ class TestNavigation:
             EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
         )
         assert order_button.is_displayed()
-        assert driver.current_url == MAIN_URL
+        assert driver.current_url == Urls.MAIN
     
     def test_navigate_from_profile_to_constructor_by_logo(self, driver):
         """Переход из личного кабинета в конструктор по логотипу"""
-        driver.get(LOGIN_URL)
+        driver.get(Urls.LOGIN)
         
-        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(EMAIL)
-        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(VALID_PASSWORD)
+        driver.find_element(*LoginPageLocators.EMAIL_INPUT).send_keys(UserData.EMAIL)
+        driver.find_element(*LoginPageLocators.PASSWORD_INPUT).send_keys(UserData.VALID_PASSWORD)
         driver.find_element(*LoginPageLocators.LOGIN_SUBMIT_BUTTON).click()
         
         WebDriverWait(driver, 10).until(
@@ -76,4 +75,4 @@ class TestNavigation:
             EC.presence_of_element_located(MainPageLocators.ORDER_BUTTON)
         )
         assert order_button.is_displayed()
-        assert driver.current_url == MAIN_URL
+        assert driver.current_url == Urls.MAIN
